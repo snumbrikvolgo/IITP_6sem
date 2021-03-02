@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2021.3.1)  2 MAR 2021 18:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2021.3.1)  2 MAR 2021 20:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -925,12 +925,12 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 <pics/service_time_MM1.png, id=22, 1084.05pt x 722.7pt>
 File: pics/service_time_MM1.png Graphic file (type png)
 <use pics/service_time_MM1.png>
-Package pdftex.def Info: pics/service_time_MM1.png  used on input line 105.
+Package pdftex.def Info: pics/service_time_MM1.png  used on input line 112.
 (pdftex.def)             Requested size: 483.69687pt x 322.46614pt.
 <pics/plr_MM1.png, id=24, 1084.05pt x 722.7pt>
 File: pics/plr_MM1.png Graphic file (type png)
 <use pics/plr_MM1.png>
-Package pdftex.def Info: pics/plr_MM1.png  used on input line 110.
+Package pdftex.def Info: pics/plr_MM1.png  used on input line 117.
 (pdftex.def)             Requested size: 483.69687pt x 322.46614pt.
  [3]
 Overfull \vbox (21.89641pt too high) has occurred while \output is active []
@@ -940,13 +940,13 @@ Overfull \vbox (21.89641pt too high) has occurred while \output is active []
 <pics/service_time_MD1.png, id=36, 1084.05pt x 722.7pt>
 File: pics/service_time_MD1.png Graphic file (type png)
 <use pics/service_time_MD1.png>
-Package pdftex.def Info: pics/service_time_MD1.png  used on input line 118.
+Package pdftex.def Info: pics/service_time_MD1.png  used on input line 125.
 (pdftex.def)             Requested size: 483.69687pt x 322.46614pt.
  (./lab1.bbl) [5 <./pics/service_time_MD1.png>] (./lab1.aux) ) 
 Here is how much of TeX's memory you used:
  6310 strings out of 494397
  87961 string characters out of 6172289
- 162876 words of memory out of 5000000
+ 163876 words of memory out of 5000000
  9502 multiletter control sequences out of 15000+600000
  15523 words of font info for 41 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
@@ -968,9 +968,9 @@ cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
 re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on lab1.pdf (5 pages, 291841 bytes).
+Output written on lab1.pdf (5 pages, 298075 bytes).
 PDF statistics:
- 243 PDF objects out of 1000 (max. 8388607)
+ 245 PDF objects out of 1000 (max. 8388607)
  68 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
