@@ -10,7 +10,7 @@ public:
   int totalServedPackets;
   double sumWaitingTime;
   double lastQueueChange;
-  std::map<int, double> queueSizeHist;
+  std::map<size_t, double> queueSizeHist;
   double totalBusyTime;
   int totalDiscardedPackets;
   double avgQueueSize;
@@ -28,53 +28,42 @@ public:
   {
   }
 
-  void cb_updateQueueSizeHist(size_t size, double time)
+  void cb_updateAdded(size_t size, double time, bool is_empty, int max_size, int q_size)
   {
     queueSizeHist[size] += time - lastQueueChange;
-  }
-
-  void cb_updateTotalBusyTime(bool is_empty, double time)
-  {
     totalBusyTime += (!is_empty) ? (time - lastQueueChange) : 0;
-  }
-
-  void cb_updateLastQueueChange(double time)
-  {
     lastQueueChange = time;
-  }
 
-  void cb_updateTotalDiscardedPackets()
-  {
-    totalDiscardedPackets++;
-  }
-
-  void cb_updateSumServiceTime(double arrival, double time )
-  {
-    sumServiceTime +=  time - arrival;
-  }
-  void cb_updateSumWaitingTime(double arrival,  double service, double time )
-  {
-    sumWaitingTime += time - arrival - service;
-  }
-  void cb_updateTotalServedPackets()
-  {
-    totalServedPackets++;
-  }
-  void cb_updateAvgQueueSize(double time)
-  {
-    for (const auto& it : queueSizeHist)
+    if (q_size == max_size && max_size != 0)
     {
-      avgQueueSize += it.first * it.second / time;
+      totalDiscardedPackets++;
     }
   }
 
-  void cb_updatePLR()
+  void cb_updateRemoved(double arrival, double service, double time, size_t size, bool is_empty)
   {
-    plr = (static_cast<double>(totalDiscardedPackets))/(totalDiscardedPackets + totalServedPackets);
+    sumServiceTime +=  time - arrival;
+    sumWaitingTime += time - arrival - service;
+    totalServedPackets++;
+
+    queueSizeHist[size] += time - lastQueueChange;
+    totalBusyTime += (!is_empty) ? (time - lastQueueChange) : 0;
+    lastQueueChange = time;
+
   }
 
-  void cb_printStats(int max_size, double time, bool verbose)
+  void cb_updateDestructed(size_t size, double time, bool is_empty, int max_size, bool verbose)
   {
+    queueSizeHist[size] += time - lastQueueChange;
+    totalBusyTime += (!is_empty) ? (time - lastQueueChange) : 0;
+
+    for (int i = 0; i <= max_size; i++)
+    {
+      avgQueueSize += i * queueSizeHist[i] / time;
+    }
+
+    plr = (static_cast<double>(totalDiscardedPackets))/(totalDiscardedPackets + totalServedPackets);
+
     if (verbose)
     {
       std::cout << "====================PRINT QUEUE STATS======================" << std::endl;
@@ -94,72 +83,4 @@ public:
         << plr << ' ' << max_size << std::endl;
     }
   }
-
 };
-
-// void cb_updateQueueSizeHist(Stats& stats, size_t size, double time)
-// {
-//   stats.queueSizeHist[size] += time - stats.lastQueueChange;
-// }
-//
-// void cb_updateTotalBusyTime(Stats& stats, bool is_empty, double time)
-// {
-//   stats.totalBusyTime += (!is_empty) ? (time - stats.lastQueueChange) : 0;
-// }
-//
-// void cb_updateLastQueueChange(Stats& stats, double time)
-// {
-//   stats.lastQueueChange = time;
-// }
-//
-// void cb_updateTotalDiscardedPackets(Stats& stats, double time)
-// {
-//   stats.totalDiscardedPackets++;
-// }
-//
-// void cb_updateSumServiceTime(Stats& stats, double arrival, double time )
-// {
-//   stats.sumServiceTime +=  time - arrival;
-// }
-// void cb_updateSumWaitingTime(Stats& stats, double arrival,  double service, double time )
-// {
-//   stats.sumWaitingTime += time - arrival - service;
-// }
-// void cb_updateTotalServedPackets(Stats& stats)
-// {
-//   stats.totalServedPackets++;
-// }
-// void cb_updateAvgQueueSize(Stats& stats, double time)
-// {
-//   for (const auto& it : stats.queueSizeHist)
-//   {
-//     stats.avgQueueSize += it.first * it.second / time;
-//   }
-// }
-//
-// void cb_updatePLR(Stats& stats)
-// {
-//   stats.plr = (static_cast<double>(stats.totalDiscardedPackets))/(stats.totalDiscardedPackets + stats.totalServedPackets);
-// }
-//
-// void cb_printStats(Stats& stats, int max_size, double time, bool verbose)
-// {
-//   if (verbose)
-//   {
-//     std::cout << "====================PRINT QUEUE STATS======================" << std::endl;
-//     std::cout << "Total served packets: " << stats.totalServedPackets << std::endl;
-//     std::cout << "Average service time: " << stats.sumServiceTime / stats.totalServedPackets << std::endl;
-//     std::cout << "Average waiting time: " << stats.sumWaitingTime / stats.totalServedPackets << std::endl;
-//     std::cout << "Average queue size: "   << stats.avgQueueSize << std::endl;
-//     std::cout << "Utilization: " << stats.totalBusyTime / time << std::endl;
-//     std::cout << "PLR: " << stats.plr << std::endl;
-//     std::cout << "Qsize: "  << max_size << std::endl;
-//     std::cout << "===========================================================" << std::endl;
-//   }
-//   else
-//   {
-//     std::cout << stats.totalServedPackets << ' ' << stats.sumServiceTime / stats.totalServedPackets << ' '
-//       << stats.sumWaitingTime / stats.totalServedPackets << ' ' << stats.avgQueueSize << ' ' << stats.totalBusyTime / time << ' '
-//       << stats.plr << ' ' << max_size << std::endl;
-//   }
-// }

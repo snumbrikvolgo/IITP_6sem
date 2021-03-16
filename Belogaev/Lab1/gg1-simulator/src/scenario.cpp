@@ -7,35 +7,12 @@
 
 void ConnectCallbacksToServer(Stats& stats, std::shared_ptr<Server> server)
 {
-  std::function<void(size_t, double)> updateQueueSizeHist = std::bind(&Stats::cb_updateQueueSizeHist, &stats, std::placeholders::_1, std::placeholders::_2);
-  std::function<void(bool, double)> updateTotalBusyTime = std::bind(&Stats::cb_updateTotalBusyTime, &stats, std::placeholders::_1, std::placeholders::_2);
-  std::function<void(double)> updateLastQueueChange = std::bind(&Stats::cb_updateLastQueueChange, &stats, std::placeholders::_1);
-  std::function<void()> updateTotalDiscardedPackets = std::bind(&Stats::cb_updateTotalDiscardedPackets, &stats);
-  std::function<void(double, double)> updateSumServiceTime = std::bind(&Stats::cb_updateSumServiceTime, &stats, std::placeholders::_1, std::placeholders::_2);
-  std::function<void(double, double, double)> updateSumWaitingTime = std::bind(&Stats::cb_updateSumWaitingTime, &stats, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-  std::function<void()> updateTotalServedPackets = std::bind(&Stats::cb_updateTotalServedPackets, &stats);
-  std::function<void(double)> updateAvgQueueSize = std::bind(&Stats::cb_updateAvgQueueSize, &stats, std::placeholders::_1);
-  std::function<void()> updatePLR = std::bind(&Stats::cb_updatePLR, &stats);
-  std::function<void(int, double, bool)> printStats = std::bind(&Stats::cb_printStats, &stats, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-
-  // std::function<void(size_t, double)> updateQueueSizeHist = std::bind(&cb_updateQueueSizeHist, stats, std::placeholders::_1, std::placeholders::_2);
-  server->ConnectToTraceToQueue_sd(updateQueueSizeHist);//&cb_updateQueueSizeHist
-  server->ConnectToTraceToQueue_bd(updateTotalBusyTime);
-  server->ConnectToTraceToQueue_d(updateLastQueueChange);
-  server->ConnectToTraceToQueue_np(updateTotalDiscardedPackets);
-
-  server->ConnectToTraceToQueue_dd(updateSumServiceTime);
-  server->ConnectToTraceToQueue_td(updateSumWaitingTime);
-  server->ConnectToTraceToQueue_np(updateTotalServedPackets);
-  server->ConnectToTraceToQueue_sd(updateQueueSizeHist);//&cb_updateQueueSizeHist
-  server->ConnectToTraceToQueue_bd(updateTotalBusyTime);
-  server->ConnectToTraceToQueue_d(updateLastQueueChange);
-
-  server->ConnectToTraceToQueue_sd(updateQueueSizeHist);//&cb_updateQueueSizeHist
-  server->ConnectToTraceToQueue_bd(updateTotalBusyTime);
-  server->ConnectToTraceToQueue_d(updateAvgQueueSize);
-  server->ConnectToTraceToQueue_np(updatePLR);
-  server->ConnectToTraceToQueue_id(printStats);
+  std::function<void(size_t, double, bool, int, int)> updateAdded = std::bind(&Stats::cb_updateAdded, &stats, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5 );
+  std::function<void(double, double, double, size_t, bool)> updateRemoved = std::bind(&Stats::cb_updateRemoved, &stats, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5 );
+  std::function<void(size_t, double, bool, int, bool)> updateDestructed = std::bind(&Stats::cb_updateDestructed, &stats, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5 );
+  server->ConnectToTraceToQueueAdded(updateAdded);
+  server->ConnectToTraceToQueueRemoved(updateRemoved);
+  server->ConnectToTraceToQueueDestructed(updateDestructed);
 }
 
 int main(int argc, char** argv)
