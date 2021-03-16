@@ -56,5 +56,3 @@ Simulator::SetSeed (int seed)
 {
   g_engine.seed (seed);
 }
-
-
